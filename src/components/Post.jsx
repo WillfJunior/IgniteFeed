@@ -4,6 +4,7 @@ import Comment from './Comment';
 import Avatar from './Avatar';
 import {format, formatDistanceToNow} from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
+import { PublishedDateFormatted, PublishedDateRelativeNow } from './DataUtils';
 
 const Post = ({author, content, publishAt}) => {
 
@@ -19,6 +20,7 @@ const Post = ({author, content, publishAt}) => {
         addSuffix:true,
     })
 
+
     const handleNewComment = () => {
         event.preventDefault();
         setComments([...comments,newCommentText])
@@ -28,6 +30,14 @@ const Post = ({author, content, publishAt}) => {
     const handleNewCommentChange = () => {
         setNewCommentText(event.target.value)
     }
+
+     const deleteComment = (commnentToDelete) => {
+        const newCommentsWithoutDeleteOne = comments.filter(comment => {
+            return comment !== commnentToDelete
+        })
+
+        setComments(newCommentsWithoutDeleteOne)
+     }
 
 
 
@@ -71,7 +81,7 @@ const Post = ({author, content, publishAt}) => {
             <div className={styles.commentList}>
                 {comments.map(comment => {
                     return (
-                        <Comment comment={comment} />
+                        <Comment key={comment} content={comment} onDeleteComment={deleteComment} />
                     )
                 })}
             </div>
